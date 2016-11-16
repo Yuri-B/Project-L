@@ -2,27 +2,28 @@
 if "deriveFrom" is set to False, then it is a basic building block, like an atom
 deriveFrom : [["system name",contains score],["system name",contains score]]
 
-the element can be derived from as many other elements as possible, provided that each of those other elements will have a contains score. 
+the element can be derived from as many other elements as possible, provided that each of those other elements will have a contains score.
 contains score is how much of a sub-element is in an element. The values for that score is from 0 to 1. If 100% of a sub-element is contained in an element, we give it a score of 1
 the contains score is also a probability score
 */
 
 var allSystems = {
-	"c++" : {deriveFrom:[["machineCode",0.5]]},
+	"c++" : {deriveFrom:[["c++",0.5]]},
+	"c" : {deriveFrom:[["machineCode",0.5]]},
 	"java" : {deriveFrom:[["c++",0.5]]},
 	"machineCode" : {deriveFrom:false},
-	"javascript" : {deriveFrom:[["java",0.5]]}
+	"javascript" : {deriveFrom:[["c",0.5]]}
 };
 
 var functions = {
 	drawTree : function(callbackEl) {
 		function scanElements() {
-			
+
 			function parseDeriveFromData(elDeriveFrom,inputEl,element) {
 
 				for(var i=0; i<elDeriveFrom.length; i++) {
 					var deriveFromIngredient = elDeriveFrom[i];
-					
+
 					if(deriveFromIngredient[0] === inputEl) {
 						// get parent element - add the "contains score"
 						return element;
@@ -38,8 +39,8 @@ var functions = {
 			for(var element in allSystems) {
 				var el = allSystems[element];
 				var elDeriveFrom = el["deriveFrom"];
-				
-				outputArray.push(parseDeriveFromData(elDeriveFrom,inputEl,element));	
+
+				outputArray.push(parseDeriveFromData(elDeriveFrom,inputEl,element));
 			}
 
 			return outputArray;
@@ -52,7 +53,7 @@ var functions = {
 		// introduce a callback to this function here
 		var matchedSystems = scanElements();
 
-		// THIS NEEDS REVISION - we need to scan the entire array of matched elements	
+		// THIS NEEDS REVISION - we need to scan the entire array of matched elements
 		alert(matchedSystems); // that's where we could draw stuff
 		functions.callback(matchedSystems[0]);
 	},
